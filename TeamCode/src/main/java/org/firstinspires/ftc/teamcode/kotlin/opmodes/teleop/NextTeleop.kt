@@ -14,18 +14,19 @@ public class NextTeleop(val robot: Robot): NextOpMode(robot) {
     val coDriver = CommandGamepad(gamepad2)
 
     override fun start() {
+        robot.intake.setPower(gamepad2)
         robot.chasis.follower = Constants.create(hardwareMap)
         robot.chasis.follower.setPose(Pose(0.0, 0.0, 0.0))
+        robot.chasis.gamepad = gamepad1
 
-        robot.chasis.manualDrive(gamepad1).schedule()
-
-        driver.a.whileTrue(robot.chasis.holdPose(Pose(72.0, 72.0, 0.0)))
-        driver.b.whileTrue(robot.chasis.holdPose(Pose(120.0, 120.0, Math.toRadians(90.0))))
+        driver.a.whileTrue(robot.chasis.holdPose(Pose(0.0, 0.0, 0.0)))
+        driver.b.whileTrue(robot.chasis.holdPose(Pose(12.0, 12.0, Math.toRadians(90.0))))
 
         Telemetry.log("Started with pedro pathing")
     }
 
     override fun periodic() {
-        robot.intake.setPower(coDriver.rightStickY.value)
+        val robotPose = robot.chasis.follower.pose()
+        Telemetry.log("Robot x = ${robotPose.x()}")
     }
 }

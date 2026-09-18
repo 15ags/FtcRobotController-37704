@@ -33,8 +33,8 @@ public class Constants {
         c.name.set("pinpoint");
         c.encoderResolutionUnit.set(DistanceUnit.MM);
         c.ticksPerUnit.set(OptionalDouble.of(19.894));
-        c.xPodOffset.set(1.3915252685546875);
-        c.yPodOffset.set(-0.7292152014304335);
+        c.xPodOffset.set(-3.896);
+        c.yPodOffset.set(-3.47);
         c.xPodDirection.set(GoBildaPinpointDriver.EncoderDirection.FORWARD);
         c.yPodDirection.set(GoBildaPinpointDriver.EncoderDirection.FORWARD);
         c.globalDistanceUnit.set(DistanceUnit.INCH);
