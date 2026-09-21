@@ -9,19 +9,35 @@ import dev.nextftc.robot.Mechanism
 
 class Chasis : Mechanism {
     lateinit var follower: Follower
+
+    var isAuto = false;
+
+    var isFieldCentric = true;
     var gamepad: Gamepad? = null
 
     override val defaultCommand: Command
         get() {
-            val gp = gamepad ?: return infinite {}
-            return infinite {
-                val powers = ManualDrive.fieldCentric(
-                    -gp.left_stick_y.toDouble(),
-                    -gp.left_stick_x.toDouble(),
-                    -gp.right_stick_x.toDouble(),
-                    follower.pose().heading()
-                )
-                follower.manual(powers)
+            if (!isAuto && gamepad != null && ::follower.isInitialized) {
+                return infinite {
+                    if (isFieldCentric) {
+                        val powers = ManualDrive.fieldCentric(
+                            -gamepad!!.left_stick_y.toDouble(),
+                            -gamepad!!.left_stick_x.toDouble(),
+                            -gamepad!!.right_stick_x.toDouble(),
+                            follower.pose().heading()
+                        )
+                        follower.manual(powers)
+
+                    } else {
+                        follower.manual(
+                            -gamepad!!.left_stick_y.toDouble(),
+                            -gamepad!!.left_stick_x.toDouble(),
+                            -gamepad!!.right_stick_x.toDouble(),
+                        )
+                    }
+                }
+            } else {
+                return infinite {}
             }
         }
 

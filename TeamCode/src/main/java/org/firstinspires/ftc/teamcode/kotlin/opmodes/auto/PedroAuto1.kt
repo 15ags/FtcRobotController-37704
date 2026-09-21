@@ -14,17 +14,19 @@ import org.firstinspires.ftc.teamcode.pedro.Constants
 
 @NextAutonomous(name = "Pedro Auto 1", preselectTeleop = "Next Teleop")
 class PedroAuto1(val robot: Robot) : NextOpMode(robot) {
+
     private val poseFactory = PoseFactory.degrees()
 
     private val start = poseFactory.of(72.0, 72.0, 90.0)
-    private val path1 = poseFactory.of(48.0, 76.0, 0.0)
-    private val path1Control1 = poseFactory.of(44.0, 110.0, 0.0)
-    private val point2 = poseFactory.of(70.0, 36.0, -90.0)
-    private val point2Control1 = poseFactory.of(54.6779, 47.1607, 0.0)
+    private val path1 = poseFactory.of(36.0, 76.0, 0.0)
+    private val path1Control1 = poseFactory.of(36.0, 130.0, 0.0)
+    private val point2 = poseFactory.of(72.0, 36.0, -90.0)
+    private val point2Control1 = poseFactory.of(48.0, 40.0, 0.0)
     private val point3 = poseFactory.of(72.0, 72.0, 90.0)
 
     init {
         Scheduler.reset()
+        robot.chasis.isAuto = true
         robot.chasis.follower = Constants.create(hardwareMap)
     }
 
@@ -32,7 +34,7 @@ class PedroAuto1(val robot: Robot) : NextOpMode(robot) {
 
     fun path2(): Path = curve(path1, point2Control1, point2).linear(path1, point2)
 
-    fun path3(): Path = line(point2, point3).linear(point2, point3)
+    fun path3(): Path = line(point2, point3).linear(point3, point2)
 
     override fun start() {
         robot.chasis.follower.setPose(start)
