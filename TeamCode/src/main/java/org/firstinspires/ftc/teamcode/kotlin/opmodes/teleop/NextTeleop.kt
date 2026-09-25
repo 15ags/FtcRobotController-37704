@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.kotlin.Robot
 import org.firstinspires.ftc.teamcode.pedro.Constants
 
 @NextTeleop(name = "Next Teleop")
-public class NextTeleop(val robot: Robot): NextOpMode(robot) {
+class NextTeleop(val robot: Robot): NextOpMode(robot) {
     val driver = CommandGamepad(gamepad1)
     val coDriver = CommandGamepad(gamepad2)
 
@@ -22,7 +22,7 @@ public class NextTeleop(val robot: Robot): NextOpMode(robot) {
     override fun start() {
         robot.chasis.follower.setPose(Pose(0.0, 0.0, 0.0))
 
-       driver.x.run({robot.chasis.isFieldCentric = !robot.chasis.isFieldCentric})
+        driver.x.run({robot.chasis.isFieldCentric = !robot.chasis.isFieldCentric})
 
         driver.a.whileTrue(robot.chasis.holdPose(Pose(0.0, 0.0, 0.0)))
         driver.b.whileTrue(robot.chasis.holdPose(Pose(12.0, 12.0, Math.toRadians(90.0))))
