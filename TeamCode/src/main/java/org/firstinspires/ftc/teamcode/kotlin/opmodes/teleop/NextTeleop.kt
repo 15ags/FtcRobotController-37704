@@ -7,11 +7,13 @@ import dev.nextftc.robot.opmode.NextTeleop
 import dev.nextftc.robot.triggers.CommandGamepad
 import org.firstinspires.ftc.teamcode.kotlin.Robot
 import org.firstinspires.ftc.teamcode.pedro.Constants
+import com.bylazar.telemetry.PanelsTelemetry
 
 @NextTeleop(name = "Next Teleop")
 class NextTeleop(val robot: Robot): NextOpMode(robot) {
     val driver = CommandGamepad(gamepad1)
     val coDriver = CommandGamepad(gamepad2)
+    val panelsTelemetry = PanelsTelemetry.telemetry
 
     init {
         robot.chasis.gamepad = gamepad1
@@ -31,6 +33,7 @@ class NextTeleop(val robot: Robot): NextOpMode(robot) {
     }
 
     override fun periodic() {
+        panelsTelemetry.addData("example", 2)
         robot.intake.setPower(coDriver.rightStickY.value)
         val robotPose = robot.chasis.follower.pose()
         Telemetry.log("Robot x = ${robotPose.x()}")
