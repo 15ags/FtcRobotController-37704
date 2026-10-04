@@ -11,15 +11,19 @@ class OuttakeTuner(val robot: Robot): NextOpMode(robot) {
     private val panelsTelemetry = PanelsTelemetry.telemetry
     private val gp1 = CommandGamepad(gamepad1)
 
-    override fun periodic() {
+    override fun start() {
         gp1.a.whileTrue(robot.outtake.shoot())
         gp1.a.whileFalse(robot.outtake.stop())
+    }
+
+    override fun periodic() {
+        robot.outtake.setConstants()
         panelsTelemetry.addData("target", robot.outtake.getTargetSpeed())
         panelsTelemetry.addData("current", robot.outtake.getCurrentSpeed())
-        robot.outtake.setConstants()
+        panelsTelemetry.update()
     }
 
     override fun end() {
-        robot.outtake.stop()
+        robot.outtake.stopMotor()
     }
 }
