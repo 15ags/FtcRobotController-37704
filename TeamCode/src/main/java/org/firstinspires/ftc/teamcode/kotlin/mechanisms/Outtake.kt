@@ -3,39 +3,45 @@ package org.firstinspires.ftc.teamcode.kotlin.mechanisms
 import com.bylazar.configurables.annotations.Configurable
 import dev.nextftc.hardware.actuators.NextMotor
 import dev.nextftc.robot.Mechanism
+import dev.nextftc.units.DegreesPerSecond
 import dev.nextftc.units.degreesPerSecond
-import dev.nextftc.units.measuretypes.AngularVelocity
 
 @Configurable
 class Outtake: Mechanism {
-    var kPShooter = 0.0
-    var kIShooter = 0.0
-    var kDShooter = 0.0
-    var kSShooter = 0.0
-    var kVShooter = 0.0
-    var kAShooter = 0.0
+    companion object {
+        @JvmField var kPShooter = 0.0
+        @JvmField var kIShooter = 0.0
+        @JvmField var kDShooter = 0.0
+        @JvmField var kSShooter = 0.0
+        @JvmField var kVShooter = 0.0
+        @JvmField var targetDps = 720.0
+    }
+
     val mainMotor = NextMotor("out")
     var isShooting = false
 
-    val targetVelocity: AngularVelocity = 720.0.degreesPerSecond
-
     fun shoot() = infinite {
-        mainMotor.setVelocitySetpoint(targetVelocity)
+        mainMotor.setVelocitySetpoint(targetDps.degreesPerSecond)
         isShooting = true
     }
 
     fun stop() = instant {
-        mainMotor.setVelocitySetpoint(0.0.degreesPerSecond)
+        stopMotor()
+    }
+
+    fun stopMotor() {
+        mainMotor.throttle = 0.0
+        mainMotor.update()
         isShooting = false
     }
 
     fun getCurrentSpeed(): Double {
-        return mainMotor.encoderVelocity.toString().toDouble()
+        return mainMotor.encoderVelocity.into(DegreesPerSecond)
     }
 
     fun getTargetSpeed(): Double {
         return if (isShooting) {
-            720.0
+            targetDps
         } else {
             0.0
         }
@@ -43,12 +49,11 @@ class Outtake: Mechanism {
 
     fun setConstants() {
         mainMotor.velocityConstants.apply {
-        kP = kPShooter
-        kI = kIShooter
-        kD = kDShooter
-        kS = kSShooter
-        kV = kVShooter
-        kA = kAShooter
-    }
+            kP = kPShooter
+            kI = kIShooter
+            kD = kDShooter
+            kS = kSShooter
+            kV = kVShooter
+        }
     }
 }
