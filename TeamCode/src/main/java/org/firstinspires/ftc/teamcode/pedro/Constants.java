@@ -20,15 +20,15 @@ import java.util.OptionalDouble;
 
 public class Constants {
     public static MecanumConfig drivetrainConfig = new MecanumConfig(c -> {
-        c.frontLeftName.set("LF");
-        c.frontRightName.set("RF");
-        c.backLeftName.set("LB");
-        c.backRightName.set("RB");
-        c.frontLeftDirection.set(DcMotorSimple.Direction.FORWARD);
-        c.frontRightDirection.set(DcMotorSimple.Direction.REVERSE);
-        c.backLeftDirection.set(DcMotorSimple.Direction.FORWARD);
-        c.backRightDirection.set(DcMotorSimple.Direction.REVERSE);
-    });
+    c.frontLeftName.set("LF");
+    c.frontRightName.set("RF");
+    c.backLeftName.set("LB");
+    c.backRightName.set("RB");
+    c.frontLeftDirection.set(DcMotorSimple.Direction.REVERSE);
+    c.frontRightDirection.set(DcMotorSimple.Direction.FORWARD);
+    c.backLeftDirection.set(DcMotorSimple.Direction.FORWARD);
+    c.backRightDirection.set(DcMotorSimple.Direction.REVERSE);
+});
     public static PinpointConfig localizerConfig = new PinpointConfig(c -> {
         c.name.set("pinpoint");
         c.encoderResolutionUnit.set(DistanceUnit.MM);

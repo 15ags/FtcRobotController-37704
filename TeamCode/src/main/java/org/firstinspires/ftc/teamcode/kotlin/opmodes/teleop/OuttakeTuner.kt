@@ -7,7 +7,7 @@ import dev.nextftc.robot.triggers.CommandGamepad
 import org.firstinspires.ftc.teamcode.kotlin.Robot
 
 @NextTeleop(name = "Shooter Tuner")
-class OuttakeTuner(val robot: Robot): NextOpMode(robot) {
+class OuttakeTuner(val robot: Robot) : NextOpMode(robot) {
     private val panelsTelemetry = PanelsTelemetry.telemetry
     private val gp1 = CommandGamepad(gamepad1)
 
@@ -17,7 +17,6 @@ class OuttakeTuner(val robot: Robot): NextOpMode(robot) {
     }
 
     override fun periodic() {
-        robot.outtake.setConstants()
         panelsTelemetry.addData("target", robot.outtake.getTargetSpeed())
         panelsTelemetry.addData("current", robot.outtake.getCurrentSpeed())
         panelsTelemetry.update()

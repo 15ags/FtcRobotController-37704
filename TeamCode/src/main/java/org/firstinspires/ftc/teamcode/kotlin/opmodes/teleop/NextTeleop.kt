@@ -35,6 +35,7 @@ class NextTeleop(val robot: Robot): NextOpMode(robot) {
     override fun periodic() {
         panelsTelemetry.addData("example", 2)
         robot.intake.setPower(coDriver.rightStickY.value)
+        robot.outtake.runOpen(coDriver.leftStickY.value)
         val robotPose = robot.chasis.follower.pose()
         Telemetry.log("Robot x = ${robotPose.x()}")
         Telemetry.log("Robot Y: ${robotPose.y()}")
