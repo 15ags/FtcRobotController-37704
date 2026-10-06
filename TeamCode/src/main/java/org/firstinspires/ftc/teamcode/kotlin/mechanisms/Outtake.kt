@@ -10,24 +10,33 @@ import dev.nextftc.units.rotationsPerSecond
 @Configurable
 class Outtake: Mechanism {
     companion object {
-        @JvmField var kPShooter = 0.0
+        @JvmField var kPShooter = 0.1
         @JvmField var kIShooter = 0.0
         @JvmField var kDShooter = 0.0
-        @JvmField var kSShooter = 0.0
-        @JvmField var kVShooter = 0.004
-        @JvmField var targetRps = 175.0
+        @JvmField var kSShooter = 0.1
+        @JvmField var kVShooter = 0.0072
+        @JvmField var kAShooter = 0.0
+        @JvmField var targetRps = 0.0
+        @JvmField var targetShootRps = 80.0
+        @JvmField var targetFloatRps = 10.0
     }
 
-    val mainMotor = NextMotor("out", anglePerCount = (2.0 *Math.PI / 28).radians)
-    var isShooting = false
+    val mainMotor = NextMotor("out", anglePerCount = (2.0 * Math.PI * 20.0 / (28.0 * 11.0)).radians)
 
     override fun periodic() {
         setConstants()
     }
 
     fun shoot() = infinite {
+        targetRps = targetShootRps
         mainMotor.setVelocitySetpoint(targetRps.rotationsPerSecond)
-        isShooting = true
+        mainMotor.update()
+    }
+
+    fun float() = infinite {
+        targetRps = targetFloatRps
+        mainMotor.setVelocitySetpoint(targetFloatRps.rotationsPerSecond)
+        mainMotor.update()
     }
 
     fun stop() = infinite {
@@ -35,9 +44,9 @@ class Outtake: Mechanism {
     }
 
     fun stopMotor() {
+        targetRps = 0.0
         mainMotor.throttle = 0.0
         mainMotor.update()
-        isShooting = false
     }
 
     fun getCurrentSpeed(): Double {
@@ -45,15 +54,7 @@ class Outtake: Mechanism {
     }
 
     fun getTargetSpeed(): Double {
-        return if (isShooting) {
-            targetRps
-        } else {
-            0.0
-        }
-    }
-
-    fun runOpen(power: Double) {
-        mainMotor.throttle = power
+        return targetRps
     }
 
     fun setConstants() {
@@ -62,6 +63,7 @@ class Outtake: Mechanism {
             kI = kIShooter
             kD = kDShooter
             kS = kSShooter
+            kA = kAShooter
             kV = kVShooter
         }
     }

@@ -22,23 +22,31 @@ class NextTeleop(val robot: Robot): NextOpMode(robot) {
     }
 
     override fun start() {
+        Telemetry.log("Started with pedro pathing")
         robot.chasis.follower.setPose(Pose(0.0, 0.0, 0.0))
 
-        driver.x.run({robot.chasis.isFieldCentric = !robot.chasis.isFieldCentric})
+        driver.x.run { robot.chasis.isFieldCentric = !robot.chasis.isFieldCentric }
 
         driver.a.whileTrue(robot.chasis.holdPose(Pose(0.0, 0.0, 0.0)))
         driver.b.whileTrue(robot.chasis.holdPose(Pose(12.0, 12.0, Math.toRadians(90.0))))
 
-        Telemetry.log("Started with pedro pathing")
+        coDriver.a.whileTrue(robot.outtake.shoot())
+        coDriver.a.whileFalse(robot.outtake.float())
     }
 
     override fun periodic() {
         panelsTelemetry.addData("example", 2)
         robot.intake.setPower(coDriver.rightStickY.value)
-        robot.outtake.runOpen(coDriver.leftStickY.value)
         val robotPose = robot.chasis.follower.pose()
         Telemetry.log("Robot x = ${robotPose.x()}")
         Telemetry.log("Robot Y: ${robotPose.y()}")
         Telemetry.log("Robot Heading: ${Math.toDegrees(robotPose.heading())}")
+        panelsTelemetry.addData("shooter target", robot.outtake.getTargetSpeed())
+        panelsTelemetry.addData("shooter current", robot.outtake.getCurrentSpeed())
+        panelsTelemetry.update()
+    }
+
+    override fun end() {
+       robot.outtake.stop()
     }
 }
