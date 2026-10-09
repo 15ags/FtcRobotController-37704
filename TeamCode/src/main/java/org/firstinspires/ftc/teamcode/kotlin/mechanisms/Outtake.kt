@@ -10,14 +10,14 @@ import dev.nextftc.units.rotationsPerSecond
 @Configurable
 class Outtake: Mechanism {
     companion object {
-        @JvmField var kPShooter = 0.1
+        @JvmField var kPShooter = 0.005
         @JvmField var kIShooter = 0.0
         @JvmField var kDShooter = 0.0
         @JvmField var kSShooter = 0.1
-        @JvmField var kVShooter = 0.0072
+        @JvmField var kVShooter = 0.01
         @JvmField var kAShooter = 0.0
         @JvmField var targetRps = 0.0
-        @JvmField var targetShootRps = 80.0
+        @JvmField var targetShootRps = 100.0
         @JvmField var targetFloatRps = 10.0
     }
 
