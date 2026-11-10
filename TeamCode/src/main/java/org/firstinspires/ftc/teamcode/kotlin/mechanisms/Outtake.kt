@@ -10,25 +10,50 @@ import dev.nextftc.units.rotationsPerSecond
 @Configurable
 class Outtake: Mechanism {
     companion object {
-        @JvmField var kPShooter = 0.005
+        @JvmField var kPShooter = 0.01
+        @JvmField var kPFlowerShooter = 0.05
         @JvmField var kIShooter = 0.0
+        @JvmField var kIFlowerShooter = 0.0
         @JvmField var kDShooter = 0.0
+        @JvmField var kDFlowerShooter = 0.0
         @JvmField var kSShooter = 0.1
-        @JvmField var kVShooter = 0.01
+        @JvmField var kSFlowerShooter = 0.1
+        @JvmField var kVShooter = 0.0097
+        @JvmField var kVFlowerShooter = 0.014
         @JvmField var kAShooter = 0.0
+        @JvmField var kAFlowerShooter = 0.0
         @JvmField var targetRps = 0.0
-        @JvmField var targetShootRps = 100.0
+        @JvmField var targetShootRps = 47.0
+
+        @JvmField var targetFlowerRps = 0.0
         @JvmField var targetFloatRps = 10.0
     }
+    val mainMotor = NextMotor("out", anglePerCount = (2.0 * Math.PI / (28.0)).radians).apply { direction = NextMotor.Direction.REVERSE }
 
-    val mainMotor = NextMotor("out", anglePerCount = (2.0 * Math.PI * 20.0 / (28.0 * 11.0)).radians)
+    var isShootingFlower = false
+
+    init {
+        mainMotor.direction = NextMotor.Direction.REVERSE
+    }
 
     override fun periodic() {
-        setConstants()
+        if (isShootingFlower) {
+            setFLowerConstants()
+        } else {
+            setShootConstants()
+        }
     }
 
     fun shoot() = infinite {
+        isShootingFlower = false
         targetRps = targetShootRps
+        mainMotor.setVelocitySetpoint(targetRps.rotationsPerSecond)
+        mainMotor.update()
+    }
+
+    fun shootFlower() = infinite {
+        isShootingFlower = true
+        targetRps = targetFlowerRps
         mainMotor.setVelocitySetpoint(targetRps.rotationsPerSecond)
         mainMotor.update()
     }
@@ -49,6 +74,10 @@ class Outtake: Mechanism {
         mainMotor.update()
     }
 
+    fun runMaxOpen() = infinite {
+        mainMotor.throttle = 1.0
+    }
+
     fun getCurrentSpeed(): Double {
         return mainMotor.encoderVelocity.into(RotationsPerSecond)
     }
@@ -57,7 +86,7 @@ class Outtake: Mechanism {
         return targetRps
     }
 
-    fun setConstants() {
+    fun setShootConstants() {
         mainMotor.velocityConstants.apply {
             kP = kPShooter
             kI = kIShooter
@@ -66,5 +95,17 @@ class Outtake: Mechanism {
             kA = kAShooter
             kV = kVShooter
         }
+        mainMotor.direction = NextMotor.Direction.FORWARD
+    }
+    fun setFLowerConstants() {
+        mainMotor.velocityConstants.apply {
+            kP = kPFlowerShooter
+            kI = kIFlowerShooter
+            kD = kDFlowerShooter
+            kS = kSFlowerShooter
+            kA = kAFlowerShooter
+            kV = kVFlowerShooter
+        }
+        mainMotor.direction = NextMotor.Direction.FORWARD
     }
 }
