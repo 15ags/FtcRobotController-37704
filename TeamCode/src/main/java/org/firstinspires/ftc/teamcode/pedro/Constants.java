@@ -26,16 +26,15 @@ public class Constants {
     c.backRightName.set("RB");
     c.frontLeftDirection.set(DcMotorSimple.Direction.REVERSE);
     c.frontRightDirection.set(DcMotorSimple.Direction.FORWARD);
-    c.backLeftDirection.set(DcMotorSimple.Direction.FORWARD);
-    c.backRightDirection.set(DcMotorSimple.Direction.REVERSE);
-});
-    public static PinpointConfig localizerConfig = new PinpointConfig(c -> {
+    c.backLeftDirection.set(DcMotorSimple.Direction.REVERSE);
+    c.backRightDirection.set(DcMotorSimple.Direction.FORWARD);
+});    public static PinpointConfig localizerConfig = new PinpointConfig(c -> {
         c.name.set("pinpoint");
         c.encoderResolutionUnit.set(DistanceUnit.MM);
         c.ticksPerUnit.set(OptionalDouble.of(19.894));
-        c.xPodOffset.set(-4.25);
-        c.yPodOffset.set(-3.5);
-        c.xPodDirection.set(GoBildaPinpointDriver.EncoderDirection.REVERSED);
+        c.xPodOffset.set(0.0);
+        c.yPodOffset.set(-5.8);
+        c.xPodDirection.set(GoBildaPinpointDriver.EncoderDirection.FORWARD);
         c.yPodDirection.set(GoBildaPinpointDriver.EncoderDirection.REVERSED);
         c.globalDistanceUnit.set(DistanceUnit.INCH);
         c.offsetUnits.set(DistanceUnit.INCH);
