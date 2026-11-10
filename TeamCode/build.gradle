@@ -35,8 +35,8 @@ android {
 
 dependencies {
     implementation project(':FtcRobotController')
-    implementation 'dev.nextftc.v2:control:0.2.1'
-    implementation 'dev.nextftc.v2:hardware:0.2.1'
-    implementation 'dev.nextftc.v2:robot:0.2.1'
+    implementation 'dev.nextftc.v2:control:0.3.0'
+    implementation 'dev.nextftc.v2:hardware:0.3.0'
+    implementation 'dev.nextftc.v2:robot:0.3.0'
     implementation "com.bylazar:fullpanels:1.0.17"
 }
